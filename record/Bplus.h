@@ -25,6 +25,7 @@ struct DkNode{
 
 struct DkLeaf{
 	struct key_loc datum[BUCKET_SIZE];
+	/*long int dloc;*/
 	int num;
 	long int pre, nxt;
 };
