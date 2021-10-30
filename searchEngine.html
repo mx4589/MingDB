@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="zh-Hant-TW">
+        <head>
+  		<title>Final Project</title>
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    		<script type="text/javascript">
+        	//var host_prefix = 'http://localhost:1323';
+        	var host_prefix = 'https://ff794ce0.ngrok.io';
+		var start = 0;
+		var total = 0;
+		var inputWord = ""
+        	$(document).ready(function() {
+            		$("#input").click(function(e) {
+			$("#result").empty();
+			$("#inf").empty();
+                	e.preventDefault();
+			inputWord = $("#search").val()
+                	var url = host_prefix + "/search?callback=?&query="+inputWord +"&start="+start+"&sortBy="+$("#SortBy").val()+"&adc="+$("#adc").val()+"&cat="+$("#web").val();
+                		$.getJSON(url, function(jsonp) {
+					total = jsonp["hits"]["total"]
+					$("#inf").append("<br><span>結果筆數："+total+"</span>")
+					$("#inf").append("<span>   搜尋時間："+jsonp["took"]+"ms</span><br>")
+					$.each(jsonp["hits"]["hits"],function(i ,v){
+						$("#result").append("<div style='border-style: solid;border-width:5px;'>")
+						$.each(v["_source"]["imgUrls"],function(j,w){
+							$("#result").append("<img src=" + w + ">")
+						})
+						$("#result").append("<h3><a href ='"+v["_source"]["url"]+"' >" + v["_source"]["title"]+"</a></h3><br>")
+						$("#result").append("<p style:'font-size: 150%;'>" + v["_source"]["text"]+"</p><br>")
+						$("#result").append("<span> 價錢:"+v["_source"]["price"]+"|"+"</span>")
+						$("#result").append("<span> 網站:"+v["_source"]["market"]+"|"+"</span>")
+						$("#result").append("<span> 庫存:"+v["_source"]["inven"]+"|"+"</span>")
+						$("#result").append("<span> 已賣:"+v["_source"]["soldOut"]+"</span><br>")
+						if(v["_source"]["PayWays"] != null){
+						$.each(v["_source"]["PayWays"],function(j,w){
+							$("#result").append("<span>"+ w +" </span>")
+						})
+						}
+						if(v["_source"]["ShipWay"] != null){
+						$.each(v["_source"]["ShipWay"],function(j,w){
+							$("#result").append("<span>"+w["ways"]+": "+w["cost"]+" </span>")
+						})
+						}
+						$("#result").append("</div><br>")
+						$("#result").append("賣家:<a href='"+v["_source"]["sellerInf"]+"'>"+v["_source"]["seller"]+"</a>")
+					
+					});
+					
+                		});
+			});
+            		$("#last").click(function(e) {
+                		e.preventDefault();
+				//alert(start);
+				if(start > 0)
+				{
+					start = start -10;
+					$("#result").empty();
+					$("#inf").empty();
+				
+				//var inputWord = $("#search").val()
+                		var url = host_prefix + "/search?callback=?&query="+inputWord +"&start="+start+"&sortBy="+$("#SortBy").val()+"&adc="+$("#adc").val()+"&cat="+$("#web").val();
+                		$.getJSON(url, function(jsonp) {
+					$("#inf").append("<br><span>結果筆數："+total+"</span>")
+					$("#inf").append("<span>   搜尋時間："+jsonp["took"]+"ms</span><br>")
+					$.each(jsonp["hits"]["hits"],function(i ,v){
+						$("#result").append("<div style='border-style: solid;border-width:5px;'>")
+						$.each(v["_source"]["imgUrls"],function(j,w){
+							$("#result").append("<img src=" + w + ">")
+						})
+						$("#result").append("<h3><a href ='"+v["_source"]["url"]+"' >" + v["_source"]["title"]+"</a></h3><br>")
+						$("#result").append("<p  style:'font-size: 150%;'>" + v["_source"]["text"]+"</p><br>")
+						$("#result").append("<span> 價錢:"+v["_source"]["price"]+"</span>")
+						$("#result").append("<span> 網站:"+v["_source"]["market"]+"|"+"</span>")
+						$("#result").append("<span> 庫存:"+v["_source"]["inven"]+"|"+"</span>")
+						$("#result").append("<span> 已賣:"+v["_source"]["soldOut"]+"</span><br>")
+						if(v["_source"]["PayWays"] != null){
+						$.each(v["_source"]["PayWays"],function(j,w){
+							$("#result").append("<span>"+ w +" </span>")
+						})
+						}
+						if(v["_source"]["ShipWay"] != null){
+						$.each(v["_source"]["ShipWay"],function(j,w){
+							$("#result").append("<span>"+w["ways"]+": "+w["cost"]+" </span>")
+						})
+						}
+						$("#result").append("</div><br>")
+						$("#result").append("賣家:<a href='"+v["_source"]["sellerInf"]+"'>"+v["_source"]["seller"]+"</a>")
+					});
+				
+                		});
+				}
+			});
+            		$("#next").click(function(e) {
+                		e.preventDefault();
+				if(start < total)
+				{
+					start = start +10
+					$("#result").empty();
+					$("#inf").empty();
+				
+
+			//var inputWord = $("#search").val()
+                		var url = host_prefix + "/search?callback=?&query="+inputWord +"&start="+start+"&sortBy="+$("#SortBy").val()+"&adc="+$("#adc").val()+"&cat="+$("#web").val();
+                		$.getJSON(url, function(jsonp) {
+					$("#inf").append("<br><span>結果筆數："+total+"</span>")
+					$("#inf").append("<span>   搜尋時間："+jsonp["took"]+"ms</span><br>")
+					$.each(jsonp["hits"]["hits"],function(i ,v){
+						$("#result").append("<div style='border-style: solid;border-width:5px;'>")
+						$.each(v["_source"]["imgUrls"],function(j,w){
+							$("#result").append("<img src=" + w + ">")
+						})
+						$("#result").append("<h3><a href ='"+v["_source"]["url"]+"' >" + v["_source"]["title"]+"</a></h3><br>")
+						$("#result").append("<p  style:'font-size: 150%;'>" + v["_source"]["text"]+"</p><br>")
+						$("#result").append("<span> 價錢:"+v["_source"]["price"]+"</span>")
+						$("#result").append("<span> 網站:"+v["_source"]["market"]+"|"+"</span>")
+						$("#result").append("<span> 庫存:"+v["_source"]["inven"]+"|"+"</span>")
+						$("#result").append("<span> 已賣:"+v["_source"]["soldOut"]+"</span><br>")
+						if(v["_source"]["PayWays"] != null){
+						$.each(v["_source"]["PayWays"],function(j,w){
+							$("#result").append("<span>"+ w +" </span>")
+						})
+						}
+						if(v["_source"]["ShipWay"] != null){
+						$.each(v["_source"]["ShipWay"],function(j,w){
+							$("#result").append("<span>"+w["ways"]+": "+w["cost"]+" </span>")
+						})
+						}
+						$("#result").append("</div><br>")
+						$("#result").append("賣家:<a href='"+v["_source"]["sellerInf"]+"'>"+v["_source"]["seller"]+"</a>")
+					
+					});
+				
+                		});
+				}
+				});
+        	});
+    </script>
+        </head>
+
+<body  background="bg2.JPG">
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<h1>
+				Final Project
+			</h1>
+				 
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<form class="form-inline">
+						<input id = "search" class="form-control mr-sm-2" type="text" /> 
+						<button id ="input" class="btn btn-primary my-2 my-sm-0" type="submit">
+							Search
+						</button>
+					</form>
+				</div>
+			<form>
+			<select id="SortBy">
+				<option value="non">Default</option>
+				<option value="price">價錢</option>
+				<option value="inven">庫存</option>
+				<option value="soldOut">已賣</option>
+			</select>
+			<select id="adc">
+				<option value="true">由小到大</option>
+				<option value="false">由大到小</option>
+			</select>
+			<select id="web">
+				<option value = "non">不分類</option>
+				<option value = "shopee">蝦皮</option>
+				<option value = "pc24h">PC24H</option>
+				<option value = "ruten">露天</option>
+			</select>
+			</form>
+			<div id = "inf">
+			</div>
+			<div id = "result">
+				
+			</div>
+		</div>
+	</div>
+</div>
+<br><br>
+<div style="position:sticky; bottom:0;text-align:center;">
+
+	<button type="button" onclick="" id="last">Last page</button> <button type="button" onclick="" id="next">Next page</button>
+</div>
+</body>
+</html>
