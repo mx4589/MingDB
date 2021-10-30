@@ -1067,13 +1067,10 @@ void updateLoc(char *tableName,char *key, long int newLoc)
 			root = readOneNode(filename,rootLoc);
 			k = binsearch2(root->keys,root->norder,key);
 			rootLoc = root->locs[k];
-			printf("%ld\n",rootLoc);
 			isleaf = root->nLeaf;
 			free(root);
 		}while(!isleaf);
-
 		printf("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n");
-
 		struct DkLeaf *leaf = readOneLeaf(filename,rootLoc);
 
 		int j;
@@ -1111,7 +1108,7 @@ void updateLoc(char *tableName,char *key, long int newLoc)
 		free(leaf);
 		free(indexArr);
 	}
-	fclose(fp);
+
 
 
 

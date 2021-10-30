@@ -149,18 +149,16 @@ long int fillLoc(char *filename,long int dlen)
 	empf = fopen(empfname,"r+");
 	if(empf==NULL)
 	{
-		printf("File not exist\n");
 		return -1;
 	}
 	else
 	{
 		
 		long int cnt;
-		fseek(empf,0,SEEK_SET);
 		fread(&cnt,8,1,empf);
-		
+		fseek(empf,0,SEEK_SET);
 		long int *empArr = (int *)malloc(sizeof(long int) * cnt *2);
-		fread(empArr,sizeof(long int),cnt*2,empf);
+		fread(empArr,sizeof(int),cnt*2,empf);
 		int i,j;
 		fclose(empf);
 		for(i=0;i<cnt;i++)
@@ -171,10 +169,7 @@ long int fillLoc(char *filename,long int dlen)
 			}
 		}
 		if(i==cnt)
-		{	
-			printf("%d %ld\n",cnt,empArr[i*2-1]-empArr[i*2-2]+1);
 			return -1;
-		}
 		long int ret = empArr[i*2]; 
 		empf = fopen(empfname,"w+");
 		cnt--;
@@ -182,9 +177,7 @@ long int fillLoc(char *filename,long int dlen)
 		{
 			empArr[j] = empArr[j+2];
 		}
-		fwrite(&cnt,8,1,empf);
 		fwrite(empArr,sizeof(long int),cnt*2-2,empf);
-		free(empArr);
 		fclose(empf);
 		return ret;
 	}	
